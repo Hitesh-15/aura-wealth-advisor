@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Wealth - AI Financial Advisor & Personal Finance Hub</title>
+    <meta name="description" content="Next-generation AI financial planning, net worth tracking, FIRE calculator, debt payoff strategist, and wealth intelligence dashboard.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Header Banner -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-chart-line-up"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Aura<span>Wealth</span></h1>
+                    <p class="tagline">Interactive Financial Simulator</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <!-- Profile Switcher -->
+                <div class="profile-selector-container">
+                    <label for="profileSelect"><i class="fa-solid fa-user-circle"></i> Demo Profile:</label>
+                    <select id="profileSelect" class="profile-select">
+                        <option value="tech_pro">Early Career Tech Professional ($115k/yr)</option>
+                        <option value="young_family">Young Family Buying First Home ($145k/yr)</option>
+                        <option value="fire_seeker">FIRE Aspirant ($160k/yr)</option>
+                        <option value="pre_retiree">Pre-Retiree Wealth Preserver ($210k/yr)</option>
+                        <option value="custom">Custom Profile</option>
+                    </select>
+                </div>
+
+                <div class="action-buttons">
+                    <div class="header-cortex-badge" title="Powered by Ambulkar Cortex AI Gateway (cortex.ambulkar.com)">
+                        <span class="pulse-dot"></span>
+                        <span class="badge-title"><i class="fa-solid fa-brain"></i> Ambulkar Cortex AI Gateway</span>
+                    </div>
+                    <button id="btnExportData" class="btn btn-secondary btn-sm" title="Export Financial Data">
+                        <i class="fa-solid fa-download"></i> Export
+                    </button>
+                    <button id="btnImportData" class="btn btn-secondary btn-sm" title="Import Financial Data">
+                        <i class="fa-solid fa-upload"></i> Import
+                    </button>
+                    <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                    <button id="btnResetData" class="btn btn-danger-soft btn-sm" title="Reset Data">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Navigation Bar -->
+        <nav class="main-nav">
+            <button class="nav-tab active" data-tab="dashboard">
+                <i class="fa-solid fa-grip"></i> Dashboard
+            </button>
+            <button class="nav-tab" data-tab="ai-advisor">
+                <i class="fa-solid fa-robot"></i> AI Financial Advisor
+            </button>
+            <button class="nav-tab" data-tab="calculators">
+                <i class="fa-solid fa-calculator"></i> Calculators & FIRE
+            </button>
+            <button class="nav-tab" data-tab="goals">
+                <i class="fa-solid fa-bullseye"></i> Financial Goals
+            </button>
+            <button class="nav-tab" data-tab="ledger">
+                <i class="fa-solid fa-wallet"></i> Net Worth & Ledger
+            </button>
+        </nav>
+
+        <!-- Main Workspace Area -->
+        <main class="main-content">
+            <!-- TAB 1: DASHBOARD -->
+            <section id="tab-dashboard" class="tab-content active">
+                <div class="dashboard-hero">
+                    <!-- Net Worth Summary Banner -->
+                    <div class="hero-card net-worth-card">
+                        <div class="card-header-flex">
+                            <span class="card-subtitle"><i class="fa-solid fa-vault"></i> Total Net Worth</span>
+                            <span class="badge badge-success" id="netWorthGrowthBadge"><i class="fa-solid fa-arrow-up"></i> +12.4% vs last year</span>
+                        </div>
+                        <h2 class="net-worth-amount" id="dashNetWorth">$0</h2>
+                        <div class="net-worth-breakdown">
+                            <div class="nw-item assets">
+                                <span class="nw-label">Total Assets</span>
+                                <span class="nw-val" id="dashTotalAssets">$0</span>
+                            </div>
+                            <div class="nw-divider"></div>
+                            <div class="nw-item liabilities">
+                                <span class="nw-label">Total Liabilities</span>
+                                <span class="nw-val" id="dashTotalLiabilities">$0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Health Score Card -->
+                    <div class="hero-card health-score-card">
+                        <div class="card-header-flex">
+                            <span class="card-subtitle"><i class="fa-solid fa-heart-pulse"></i> Financial Health Score</span>
+                            <span class="info-tooltip" title="Score evaluated across Emergency Savings, Debt Ratio, Savings Rate, and Investment Diversification.">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </span>
+                        </div>
+                        <div class="score-display-wrapper">
+                            <div class="score-ring-container">
+                                <svg class="score-ring" viewBox="0 0 120 120">
+                                    <circle class="score-ring-bg" cx="60" cy="60" r="52"></circle>
+                                    <circle class="score-ring-fill" id="healthScoreCircle" cx="60" cy="60" r="52" stroke-dasharray="326.72" stroke-dashoffset="81.68"></circle>
+                                </svg>
+                                <div class="score-inner-text">
+                                    <span class="score-num" id="dashHealthScore">85</span>
+                                    <span class="score-max">/100</span>
+                                </div>
+                            </div>
+                            <div class="score-status-details">
+                                <div class="score-status-title" id="healthStatusTitle">Excellent Alignment</div>
+                                <p class="score-status-desc" id="healthStatusDesc">Your emergency buffer and savings rate exceed target benchmarks. Focus on tax-efficient investing next.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cashflow Summary Card -->
+                    <div class="hero-card cashflow-card">
+                        <div class="card-header-flex">
+                            <span class="card-subtitle"><i class="fa-solid fa-money-bill-trend-up"></i> Monthly Cashflow</span>
+                            <span class="badge badge-primary" id="savingsRateBadge">Savings Rate: 35%</span>
+                        </div>
+                        <div class="cashflow-metrics">
+                            <div class="cf-metric income">
+                                <div class="cf-icon"><i class="fa-solid fa-arrow-down-left"></i></div>
+                                <div>
+                                    <span class="cf-label">Monthly Income</span>
+                                    <span class="cf-val" id="dashMonthlyIncome">$0</span>
+                                </div>
+                            </div>
+                            <div class="cf-metric expenses">
+                                <div class="cf-icon"><i class="fa-solid fa-arrow-up-right"></i></div>
+                                <div>
+                                    <span class="cf-label">Monthly Expenses</span>
+                                    <span class="cf-val" id="dashMonthlyExpenses">$0</span>
+                                </div>
+                            </div>
+                            <div class="cf-metric net-savings">
+                                <div class="cf-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+                                <div>
+                                    <span class="cf-label">Net Surplus / Savings</span>
+                                    <span class="cf-val" id="dashMonthlySurplus">$0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Charts Grid -->
+                <div class="dashboard-grid">
+                    <div class="glass-panel chart-panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-chart-pie"></i> Asset Allocation</h3>
+                            <span class="panel-subtitle">Current Distribution</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="assetAllocationChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel chart-panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-chart-column"></i> Monthly Budget Breakdown</h3>
+                            <span class="panel-subtitle">50/30/20 Benchmark Comparison</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="budgetBreakdownChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel chart-panel wide-panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-chart-line"></i> 10-Year Wealth Projection</h3>
+                            <span class="panel-subtitle">Based on current savings & returns</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="netWorthProjectionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Recommendations Preview -->
+                <div class="glass-panel alerts-panel">
+                    <div class="panel-header">
+                        <h3><i class="fa-solid fa-bolt-lightning text-gold"></i> AI Quick Priority Insights</h3>
+                        <button class="btn btn-text text-accent" onclick="switchToTab('ai-advisor')">View Full Audit <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                    <div class="quick-insights-grid" id="quickInsightsContainer">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: AI FINANCIAL ADVISOR -->
+            <section id="tab-ai-advisor" class="tab-content">
+                <div class="ai-advisor-layout">
+                    <!-- Left Column: Financial Audit & Roadmap -->
+                    <div class="audit-column">
+                        <div class="glass-panel advisor-config-card">
+                            <div class="panel-header">
+                                <h3><i class="fa-solid fa-sliders"></i> Advisor Persona</h3>
+                            </div>
+                            <div class="persona-selector-grid">
+                                <label class="persona-option">
+                                    <input type="radio" name="advisorPersona" value="balanced">
+                                    <div class="persona-box">
+                                        <i class="fa-solid fa-scale-balanced"></i>
+                                        <span>Balanced Wealth Growth</span>
+                                    </div>
+                                </label>
+                                <label class="persona-option">
+                                    <input type="radio" name="advisorPersona" value="fire">
+                                    <div class="persona-box">
+                                        <i class="fa-solid fa-fire text-amber"></i>
+                                        <span>Aggressive FIRE Coach</span>
+                                    </div>
+                                </label>
+                                <label class="persona-option">
+                                    <input type="radio" name="advisorPersona" value="conservative">
+                                    <div class="persona-box">
+                                        <i class="fa-solid fa-shield-halved text-blue"></i>
+                                        <span>Wealth Preservation</span>
+                                    </div>
+                                </label>
+                                <label class="persona-option">
+                                    <input type="radio" name="advisorPersona" value="debt_slayer">
+                                    <div class="persona-box">
+                                        <i class="fa-solid fa-sword text-red"></i>
+                                        <span>Debt Crusader</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Financial Health Diagnostic Breakdown -->
+                        <div class="glass-panel diagnostic-panel">
+                            <div class="panel-header">
+                                <h3><i class="fa-solid fa-stethoscope"></i> Financial Health Diagnostic</h3>
+                            </div>
+                            <div class="diagnostic-list" id="diagnosticMetricsList">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+
+                        <!-- Actionable Financial Priority Roadmap -->
+                        <div class="glass-panel roadmap-panel">
+                            <div class="panel-header">
+                                <h3><i class="fa-solid fa-route"></i> Financial Action Roadmap</h3>
+                                <span class="badge badge-outline">Step-by-Step Priority</span>
+                            </div>
+                            <div class="roadmap-steps" id="roadmapStepsList">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive AI Advisory Chat & Live Market Research -->
+                    <div class="chat-column">
+                        <!-- Live Market & Economic Indicators Panel -->
+                        <div class="glass-panel economic-indicators-card">
+                            <div class="panel-header flex-between">
+                                <div class="header-with-privacy">
+                                    <h3><i class="fa-solid fa-globe-americas text-accent"></i> Live Economic & Market Benchmarks</h3>
+                                    <span class="privacy-tag" title="Your private financial data remains 100% inside your browser localStorage. Only clean public search terms leave your device.">
+                                        <i class="fa-solid fa-shield-halved text-emerald"></i> Privacy Guard (0 Private Bytes Sent)
+                                    </span>
+                                </div>
+                                <button id="btnRefreshMarketData" class="btn btn-secondary btn-xs" title="Refresh Live Market Data">
+                                    <i class="fa-solid fa-rotate-right"></i> Refresh Rates
+                                </button>
+                            </div>
+                            <div class="market-indicators-grid" id="marketIndicatorsGrid">
+                                <!-- Dynamically populated by JS -->
+                            </div>
+                        </div>
+
+                        <div class="glass-panel ai-chat-panel">
+                            <div class="chat-header">
+                                <div class="chat-title">
+                                    <div class="ai-avatar"><i class="fa-solid fa-brain" style="color: #38bdf8;"></i></div>
+                                    <div>
+                                        <h3>Ambulkar Cortex AI Advisor</h3>
+                                        <span class="status-online"><i class="fa-solid fa-circle" style="color: #38bdf8;"></i> Ambulkar Cortex Neural Gateway (Gemini 3.6 Flash Active)</span>
+                                    </div>
+                                </div>
+                                <button id="btnClearChat" class="btn btn-icon btn-sm" title="Clear Conversation"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+
+                            <!-- Preset Scenario Prompt Chips -->
+                            <div class="prompt-chips-wrapper">
+                                <span class="chips-label">Quick Prompts:</span>
+                                <div class="chips-container">
+                                    <button class="chip-btn" data-prompt="How should I prioritize my extra $1,000 monthly savings?">💡 Prioritize $1k Extra Savings</button>
+                                    <button class="chip-btn" data-prompt="Am I on track for early retirement (FIRE)?">🔥 Check FIRE Readiness</button>
+                                    <button class="chip-btn" data-prompt="Should I pay down my low-interest debt or invest more?">⚖️ Debt vs. Invest Strategy</button>
+                                    <button class="chip-btn" data-prompt="How large should my emergency fund be right now?">🛡️ Emergency Fund Check</button>
+                                </div>
+                            </div>
+
+                            <!-- Chat Messages Scroll Area -->
+                            <div class="chat-messages" id="chatMessages">
+                                <!-- Initial message populated by JS -->
+                            </div>
+
+                            <!-- Chat Input Form -->
+                            <form id="chatForm" class="chat-input-form">
+                                <input type="text" id="chatInput" placeholder="Ask your AI Advisor anything about your financial plan..." autocomplete="off">
+                                <button type="submit" class="btn btn-primary" id="btnSendChat">
+                                    <span>Send</span> <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: CALCULATORS & FIRE -->
+            <section id="tab-calculators" class="tab-content">
+                <div class="calc-subnav">
+                    <button class="sub-tab active" data-subtab="fire-calc"><i class="fa-solid fa-fire"></i> FIRE & Retirement</button>
+                    <button class="sub-tab" data-subtab="compound-calc"><i class="fa-solid fa-chart-line"></i> Compound Interest</button>
+                    <button class="sub-tab" data-subtab="debt-calc"><i class="fa-solid fa-receipt"></i> Debt Payoff Strategist</button>
+                    <button class="sub-tab" data-subtab="budget-calc"><i class="fa-solid fa-pie-chart"></i> 50/30/20 Budget Planner</button>
+                </div>
+
+                <!-- SUBTAB: FIRE & Retirement -->
+                <div id="subtab-fire-calc" class="subtab-content active">
+                    <div class="calc-grid">
+                        <div class="glass-panel calc-controls">
+                            <h3><i class="fa-solid fa-sliders"></i> FIRE Assumptions</h3>
+                            <div class="form-group">
+                                <label for="fireCurrentAge">Current Age: <span id="fireCurrentAgeVal">30</span></label>
+                                <input type="range" id="fireCurrentAge" min="18" max="70" value="30">
+                            </div>
+                            <div class="form-group">
+                                <label for="fireTargetAge">Target Retirement Age: <span id="fireTargetAgeVal">55</span></label>
+                                <input type="range" id="fireTargetAge" min="30" max="80" value="55">
+                            </div>
+                            <div class="form-group">
+                                <label for="fireAnnualExpenses">Target Retirement Annual Expenses ($)</label>
+                                <input type="number" id="fireAnnualExpenses" value="60000" step="1000">
+                            </div>
+                            <div class="form-group">
+                                <label for="fireWithdrawalRate">Safe Withdrawal Rate (%): <span id="fireWithdrawalRateVal">4.0%</span></label>
+                                <input type="range" id="fireWithdrawalRate" min="2.5" max="5.0" step="0.1" value="4.0">
+                            </div>
+                            <div class="form-group">
+                                <label for="fireExpectedReturn">Expected Investment Return (%): <span id="fireExpectedReturnVal">7.0%</span></label>
+                                <input type="range" id="fireExpectedReturn" min="3.0" max="12.0" step="0.5" value="7.0">
+                            </div>
+                            <div class="form-group">
+                                <label for="fireInflation">Expected Inflation Rate (%): <span id="fireInflationVal">2.5%</span></label>
+                                <input type="range" id="fireInflation" min="1.0" max="6.0" step="0.1" value="2.5">
+                            </div>
+                        </div>
+
+                        <div class="glass-panel calc-results">
+                            <div class="calc-summary-cards">
+                                <div class="mini-stat-card">
+                                    <span class="stat-label">FIRE Target Portfolio</span>
+                                    <span class="stat-value text-emerald" id="fireTargetPortfolio">$1,500,000</span>
+                                    <span class="stat-sub">4% Withdrawal Rule</span>
+                                </div>
+                                <div class="mini-stat-card">
+                                    <span class="stat-label">Required Monthly Savings</span>
+                                    <span class="stat-value text-gold" id="fireRequiredMonthly">$1,850</span>
+                                    <span class="stat-sub">To hit target by age <span id="fireTargetAgeDisplay">55</span></span>
+                                </div>
+                                <div class="mini-stat-card">
+                                    <span class="stat-label">Projected FIRE Age</span>
+                                    <span class="stat-value text-accent" id="fireProjectedAge">52</span>
+                                    <span class="stat-sub">Based on current savings</span>
+                                </div>
+                            </div>
+
+                            <div class="chart-container">
+                                <canvas id="fireProjectionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB: Compound Interest -->
+                <div id="subtab-compound-calc" class="subtab-content">
+                    <div class="calc-grid">
+                        <div class="glass-panel calc-controls">
+                            <h3><i class="fa-solid fa-sliders"></i> Investment Variables</h3>
+                            <div class="form-group">
+                                <label for="ciInitialDeposit">Initial Investment ($)</label>
+                                <input type="number" id="ciInitialDeposit" value="25000" step="1000">
+                            </div>
+                            <div class="form-group">
+                                <label for="ciMonthlyDeposit">Monthly Contribution ($)</label>
+                                <input type="number" id="ciMonthlyDeposit" value="1000" step="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="ciInvestmentYears">Investment Horizon (Years): <span id="ciYearsVal">20</span></label>
+                                <input type="range" id="ciInvestmentYears" min="1" max="40" value="20">
+                            </div>
+                            <div class="form-group">
+                                <label for="ciAnnualReturn">Estimated Annual Return (%): <span id="ciReturnVal">8.0%</span></label>
+                                <input type="range" id="ciAnnualReturn" min="1.0" max="15.0" step="0.5" value="8.0">
+                            </div>
+                        </div>
+
+                        <div class="glass-panel calc-results">
+                            <div class="calc-summary-cards">
+                                <div class="mini-stat-card">
+                                    <span class="stat-label">Future Portfolio Value</span>
+                                    <span class="stat-value text-emerald" id="ciFutureValue">$688,500</span>
+                                </div>
+                                <div class="mini-stat-card">
+                                    <span class="stat-label">Total Contributions</span>
+                                    <span class="stat-value text-blue" id="ciTotalPrincipal">$265,000</span>
+                                </div>
+                                <div class="mini-stat-card">
+                                    <span class="stat-label">Total Interest / Growth</span>
+                                    <span class="stat-value text-gold" id="ciTotalInterest">$423,500</span>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="compoundGrowthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB: Debt Payoff Strategist -->
+                <div id="subtab-debt-calc" class="subtab-content">
+                    <div class="calc-grid">
+                        <div class="glass-panel calc-controls">
+                            <h3><i class="fa-solid fa-sliders"></i> Extra Monthly Debt Payment</h3>
+                            <div class="form-group">
+                                <label for="debtExtraMonthly">Extra Monthly Budget ($)</label>
+                                <input type="number" id="debtExtraMonthly" value="300" step="50">
+                                <span class="form-hint">Applied above minimum required payments.</span>
+                            </div>
+
+                            <div class="debt-strategy-compare">
+                                <div class="strategy-box">
+                                    <h4><i class="fa-solid fa-bolt text-amber"></i> Avalanche Method</h4>
+                                    <p>Focuses extra payment on highest APR first. Saves the most interest.</p>
+                                </div>
+                                <div class="strategy-box">
+                                    <h4><i class="fa-solid fa-snowflake text-blue"></i> Snowball Method</h4>
+                                    <p>Focuses extra payment on smallest balance first. Builds psychological momentum.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel calc-results">
+                            <div class="calc-summary-cards">
+                                <div class="mini-stat-card">
+                                    <span class="stat-label">Avalanche Payoff Time</span>
+                                    <span class="stat-value text-emerald" id="avalancheMonths">24 Months</span>
+                                    <span class="stat-sub">Interest Saved: <strong id="avalancheSavedInterest" class="text-emerald">$4,200</strong></span>
+                                </div>
+                                <div class="mini-stat-card">
+                                    <span class="stat-label">Snowball Payoff Time</span>
+                                    <span class="stat-value text-blue" id="snowballMonths">26 Months</span>
+                                    <span class="stat-sub">Interest Saved: <strong id="snowballSavedInterest" class="text-blue">$3,800</strong></span>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="debtPayoffChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB: 50/30/20 Budget Planner -->
+                <div id="subtab-budget-calc" class="subtab-content">
+                    <div class="calc-grid">
+                        <div class="glass-panel calc-controls">
+                            <h3><i class="fa-solid fa-sliders"></i> Income & Ratio Adjuster</h3>
+                            <div class="form-group">
+                                <label for="budgetIncome">Monthly Take-Home Pay ($)</label>
+                                <input type="number" id="budgetIncome" value="7500" step="100">
+                            </div>
+                            <div class="budget-rule-preset">
+                                <button class="btn btn-sm btn-outline active" data-rule="50-30-20">Standard 50/30/20</button>
+                                <button class="btn btn-sm btn-outline" data-rule="60-20-20">Aggressive Savings 60/20/20</button>
+                                <button class="btn btn-sm btn-outline" data-rule="70-20-10">Minimalist 70/20/10</button>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel calc-results">
+                            <div class="budget-target-cards">
+                                <div class="budget-target-card needs">
+                                    <h4><i class="fa-solid fa-house"></i> Needs (50%)</h4>
+                                    <div class="b-amount" id="budTargetNeeds">$3,750</div>
+                                    <p class="b-desc">Housing, utilities, groceries, debt minimums, healthcare.</p>
+                                </div>
+                                <div class="budget-target-card wants">
+                                    <h4><i class="fa-solid fa-gamepad"></i> Wants (30%)</h4>
+                                    <div class="b-amount" id="budTargetWants">$2,250</div>
+                                    <p class="b-desc">Dining out, travel, entertainment, hobbies, shopping.</p>
+                                </div>
+                                <div class="budget-target-card savings">
+                                    <h4><i class="fa-solid fa-piggy-bank"></i> Savings & Debt (20%)</h4>
+                                    <div class="b-amount" id="budTargetSavings">$1,500</div>
+                                    <p class="b-desc">Investments, retirement accounts, emergency fund, extra debt paydown.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: GOALS & MILESTONES -->
+            <section id="tab-goals" class="tab-content">
+                <div class="glass-panel goals-header-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3><i class="fa-solid fa-bullseye"></i> Wealth Milestones & Targets</h3>
+                            <p class="panel-subtitle">Track custom life goals with automated monthly allocation targets.</p>
+                        </div>
+                        <button id="btnOpenGoalModal" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add New Goal</button>
+                    </div>
+                </div>
+
+                <div class="goals-grid" id="goalsContainer">
+                    <!-- Dynamically populated -->
+                </div>
+            </section>
+
+            <!-- TAB 5: NET WORTH & LEDGER -->
+            <section id="tab-ledger" class="tab-content">
+                <div class="ledger-layout">
+                    <!-- Left: Assets List -->
+                    <div class="glass-panel ledger-column">
+                        <div class="panel-header">
+                            <div>
+                                <h3><i class="fa-solid fa-circle-arrow-up text-emerald"></i> Assets</h3>
+                                <span class="panel-subtitle">Everything you own</span>
+                            </div>
+                            <button id="btnAddAssetBtn" class="btn btn-sm btn-outline-success"><i class="fa-solid fa-plus"></i> Add Asset</button>
+                        </div>
+                        <div class="ledger-table-wrapper">
+                            <table class="ledger-table" id="assetsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Value</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Right: Liabilities List -->
+                    <div class="glass-panel ledger-column">
+                        <div class="panel-header">
+                            <div>
+                                <h3><i class="fa-solid fa-circle-arrow-down text-red"></i> Liabilities & Debt</h3>
+                                <span class="panel-subtitle">Everything you owe</span>
+                            </div>
+                            <button id="btnAddLiabilityBtn" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-plus"></i> Add Debt</button>
+                        </div>
+                        <div class="ledger-table-wrapper">
+                            <table class="ledger-table" id="liabilitiesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th>Balance</th>
+                                        <th>APR</th>
+                                        <th>Min Pay</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL: ADD / EDIT GOAL -->
+    <div id="goalModal" class="modal-backdrop">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="goalModalTitle"><i class="fa-solid fa-bullseye"></i> Add Financial Goal</h3>
+                <button class="modal-close" id="btnCloseGoalModal">&times;</button>
+            </div>
+            <form id="goalForm">
+                <input type="hidden" id="goalId">
+                <div class="form-group">
+                    <label for="goalName">Goal Title</label>
+                    <input type="text" id="goalName" placeholder="e.g., Home Down Payment" required>
+                </div>
+                <div class="form-group">
+                    <label for="goalCategory">Category</label>
+                    <select id="goalCategory">
+                        <option value="House">Real Estate / House</option>
+                        <option value="Emergency">Emergency Fund</option>
+                        <option value="Retirement">Retirement Boost</option>
+                        <option value="Vacation">Vacation / Travel</option>
+                        <option value="Vehicle">Vehicle Purchase</option>
+                        <option value="Education">Education</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="goalTarget">Target Amount ($)</label>
+                        <input type="number" id="goalTarget" placeholder="50000" min="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="goalCurrent">Current Saved ($)</label>
+                        <input type="number" id="goalCurrent" placeholder="12000" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="goalTargetDate">Target Completion Date</label>
+                    <input type="date" id="goalTargetDate" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelGoal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD / EDIT LEDGER ITEM -->
+    <div id="ledgerModal" class="modal-backdrop">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="ledgerModalTitle">Add Ledger Item</h3>
+                <button class="modal-close" id="btnCloseLedgerModal">&times;</button>
+            </div>
+            <form id="ledgerForm">
+                <input type="hidden" id="ledgerItemType">
+                <input type="hidden" id="ledgerItemId">
+                <div class="form-group">
+                    <label for="ledgerName">Item Name</label>
+                    <input type="text" id="ledgerName" placeholder="e.g., Vanguard Total Stock Index" required>
+                </div>
+                <div class="form-group">
+                    <label for="ledgerCategory">Category</label>
+                    <select id="ledgerCategory">
+                        <!-- Populated dynamically based on type -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ledgerAmount" id="ledgerAmountLabel">Value ($)</label>
+                    <input type="number" id="ledgerAmount" placeholder="15000" min="0" required>
+                </div>
+                <div id="liabilityExtraFields" style="display: none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ledgerApr">APR Interest Rate (%)</label>
+                            <input type="number" id="ledgerApr" placeholder="18.5" step="0.1" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="ledgerMinPay">Monthly Min Payment ($)</label>
+                            <input type="number" id="ledgerMinPay" placeholder="150" min="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelLedger">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <!-- Educational Simulator & Legal Disclaimer Footer -->
+        <footer class="app-disclaimer-footer" style="margin-top: 40px; margin-bottom: 30px; padding: 20px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 0.82rem; color: var(--text-muted, #94a3b8); text-align: center; line-height: 1.55;">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; color: #fbbf24; margin-bottom: 6px; font-size: 0.88rem;">
+                <i class="fa-solid fa-scale-balanced"></i> Educational Simulator & Software Showcase Disclaimer
+            </div>
+            <p style="max-width: 900px; margin: 0 auto;">
+                <strong>Aura Wealth</strong> is an interactive scenario simulator, portfolio engineering showcase, and AI gateway demonstration built for educational and software modeling purposes. 
+                Calculations, financial projections (FIRE, net worth, debt payoff), and AI outputs are generated for hypothetical scenario planning only and <strong>do not constitute certified financial, tax, investment, or legal advice</strong>.
+            </p>
+            <p style="margin-top: 8px; font-size: 0.76rem; opacity: 0.85; color: #cbd5e1;">
+                Always consult a licensed Certified Financial Planner (CFP) or CPA for actual financial guidance. Built by Hitesh Ambulkar. Powered by <strong style="color: #38bdf8;">Ambulkar Cortex AI Gateway</strong> (<a href="../Cortex-AI-search/index.html" target="_blank" style="color: #38bdf8; text-decoration: underline;">cortex.ambulkar.com</a>).
+            </p>
+        </footer>
+    </div>
+
+    <!-- Custom App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
