@@ -1,18 +1,14 @@
-# 📈 Aura Wealth — Interactive Financial Simulator
+# 📈 Aura Wealth
 
-> **Next-Generation Personal Financial Modeling Suite, Net Worth Analytics Dashboard, FIRE Calculator, & Ambulkar Cortex AI Gateway Integration.**
+> **Interactive Financial Simulator & Scenario Sandbox**  
+> Custom Domain: [wealth.ambulkar.com](https://wealth.ambulkar.com)
 
-![Aura Wealth Banner](https://img.shields.io/badge/Aura_Wealth-v2.0-38bdf8?style=for-the-badge&logo=chart-line)
-![Powered by Cortex AI](https://img.shields.io/badge/Powered_by-Ambulkar_Cortex_AI-38bdf8?style=for-the-badge&logo=brain)
-![License](https://img.shields.io/badge/License-MIT-emerald?style=for-the-badge)
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
+[![Stack: Vanilla JS](https://img.shields.io/badge/Stack-HTML5%20%7C%20CSS3%20%7C%20JS-blue.svg)](https://developer.mozilla.org/)
+[![AI: Cortex Gateway](https://img.shields.io/badge/AI-Ambulkar%20Cortex-cyan.svg)](#-key-features)
+[![Vibe Coding](https://img.shields.io/badge/Vibe%20Coding-AI%20Pair%20Programmed-emerald.svg)](#-vibe-coding--architectural-highlights)
 
----
-
-## 🌟 Overview
-
-**Aura Wealth** is an interactive, browser-based financial modeling sandbox designed for scenario planning, net worth tracking, debt payoff strategy modeling, and FIRE (Financial Independence, Retire Early) forecasting. 
-
-It features zero-delay client-side state management, rich Chart.js visualizations, persona-based financial diagnostics, and seamless integration with **[Ambulkar Cortex AI Gateway](https://github.com/Hitesh-15/Cortex-AI-search)**.
+Aura Wealth is an interactive personal financial scenario simulator, net worth tracking dashboard, FIRE (Financial Independence, Retire Early) calculator, debt payoff strategist, and wealth intelligence sandbox powered by **[Ambulkar Cortex AI Gateway](https://github.com/Hitesh-15/Cortex-AI-search)**.
 
 ---
 
@@ -31,42 +27,46 @@ It features zero-delay client-side state management, rich Chart.js visualization
 
 ---
 
-## 🛡️ Educational Simulator & Open Data Legal Disclaimer
+## ⚡ Vibe Coding & Architectural Highlights
 
-- **Open Source Data Notice:** All economic benchmarks, market interest rates, IRS contribution limits, and inflation metrics displayed within this application are derived from **public domain open data sources** (e.g., U.S. Bureau of Labor Statistics, Federal Reserve public economic releases, IRS public guidelines, and general market benchmarks). **Zero copyrighted or proprietary paid financial data feeds are used.**
-- **Non-Commercial Personal Project:** This software is an independent open-source personal engineering project created strictly for educational demonstration, scenario modeling, and portfolio showcase purposes. It is non-commercial and not offered for business or sale.
-- **No Financial Advice:** Projections, calculations, and AI responses are for hypothetical scenario modeling only and **do not constitute certified financial, tax, investment, or legal advice**. Always consult a licensed Certified Financial Planner (CFP) or CPA for actual financial guidance.
-
----
-
-## 🛠️ Technology Stack
-
-- **Frontend Core:** HTML5, Modern Vanilla CSS (Dark Glassmorphism, CSS Custom Properties), ES6+ Javascript
-- **Data Visualization:** Chart.js
-- **Icons:** FontAwesome Pro / Free SVG icons
-- **AI Gateway:** Ambulkar Cortex AI Gateway (Google Gemini 3.6 Flash Route)
+This repository was designed and engineered as a showcase of modern **Vibe Coding** and **GenAI Software Architecture**:
+- **Zero Heavy Framework Bloat**: Built purely with high-performance Vanilla HTML5, CSS3, and ES6+ JS for instant load times (<50ms).
+- **Client-Side Privacy Architecture**: Anonymizes financial figures locally before sending query text to LLM endpoints.
+- **Client-Side Data Persistence**: Financial ledger state stored locally in browser `localStorage` with JSON export/import.
 
 ---
 
-## 🚀 Getting Started
+## 🛡️ Educational Simulator & Open Data Notice
 
-1. Clone the repository:
+- **Open Source Data Notice:** All economic benchmarks, market interest rates, IRS contribution limits, and inflation metrics displayed within this application are derived from **public domain open data sources** (U.S. Bureau of Labor Statistics, Federal Reserve public releases, IRS public guidelines). Zero copyrighted or proprietary paid market data feeds are used.
+- **Non-Commercial Personal Project:** This software is an independent open-source personal project created strictly for educational demonstration, scenario modeling, and portfolio showcase purposes. It is non-commercial and not offered for business or sale.
+- **No Financial Advice:** Projections, calculations, and AI responses are for hypothetical scenario modeling only and **do not constitute certified financial, tax, investment, or legal advice**.
+
+---
+
+## 🚀 Quick Start
+
+1. Clone or open the repository:
    ```bash
    git clone https://github.com/Hitesh-15/aura-wealth-advisor.git
+   cd aura-wealth-advisor
    ```
-2. Open `index.html` in any web browser or serve via HTTP server:
+2. Serve locally with any static web server:
    ```bash
-   npx http-server ./ -p 8000
+   python -m http.server 8000
    ```
+3. Open `http://localhost:8000/` in your browser.
 
 ---
 
-## 👤 Author
+## 🛠 Tech Stack
 
-**Hitesh Ambulkar**  
-*Director of Product | Platform & AI Innovation Leader*  
-- Portfolio: [hiteshambulkar.com](https://hiteshambulkar.com)
-- GitHub: [@Hitesh-15](https://github.com/Hitesh-15)
+- **Frontend Core**: Vanilla HTML5, Modern CSS3 (Dark Glassmorphism UI), Vanilla JavaScript (ES6+).
+- **Data Visualization**: Chart.js.
+- **Icons**: Font Awesome 6 (Free License).
 
 ---
-*Built with ❤️ by Hitesh Ambulkar. Powered by Ambulkar Cortex AI.*
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE) — free to use, modify, and showcase for personal portfolios, educational demos, and open-source contributions.
