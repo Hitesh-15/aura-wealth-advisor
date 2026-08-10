@@ -31,11 +31,11 @@ It features zero-delay client-side state management, rich Chart.js visualization
 
 ---
 
-## 🛡️ Educational Simulator Disclaimer
+## 🛡️ Educational Simulator & Open Data Legal Disclaimer
 
-**Aura Wealth** is an interactive scenario simulator, portfolio engineering showcase, and AI gateway demonstration built for educational and software modeling purposes. 
-
-Calculations, financial projections (FIRE, net worth, debt payoff), and AI outputs are generated for hypothetical scenario planning only and **do not constitute certified financial, tax, investment, or legal advice**. Always consult a licensed Certified Financial Planner (CFP) or CPA for actual financial guidance.
+- **Open Source Data Notice:** All economic benchmarks, market interest rates, IRS contribution limits, and inflation metrics displayed within this application are derived from **public domain open data sources** (e.g., U.S. Bureau of Labor Statistics, Federal Reserve public economic releases, IRS public guidelines, and general market benchmarks). **Zero copyrighted or proprietary paid financial data feeds are used.**
+- **Non-Commercial Personal Project:** This software is an independent open-source personal engineering project created strictly for educational demonstration, scenario modeling, and portfolio showcase purposes. It is non-commercial and not offered for business or sale.
+- **No Financial Advice:** Projections, calculations, and AI responses are for hypothetical scenario modeling only and **do not constitute certified financial, tax, investment, or legal advice**. Always consult a licensed Certified Financial Planner (CFP) or CPA for actual financial guidance.
 
 ---
 
