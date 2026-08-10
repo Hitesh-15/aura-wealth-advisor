@@ -1831,37 +1831,6 @@ function formatNumber(val) {
     return Math.round(val).toLocaleString();
 }
 
-// Vault Lock Modal Setup & Handlers
-function openLockModal() {
-    const modal = document.getElementById("vaultLockModal");
-    if (modal) modal.classList.add("active");
-}
-
-function closeLockModal() {
-    const modal = document.getElementById("vaultLockModal");
-    if (modal) modal.classList.remove("active");
-}
-
-function handleVaultFormSubmit(e) {
-    e.preventDefault();
-    const pass = document.getElementById("inputMasterPassphrase")?.value.trim();
-    const pin = document.getElementById("inputFactorTwoPin")?.value.trim();
-    const openrouterKey = document.getElementById("inputOpenRouterKey")?.value.trim();
-
-    if (!pass || !pin) {
-        alert("Please enter both Factor 1 (Master Passphrase) and Factor 2 (Security PIN).");
-        return;
-    }
-
-    localStorage.setItem("ambu_vault_authenticated", "true");
-    if (openrouterKey) {
-        localStorage.setItem("ambu_key_openrouter", openrouterKey);
-    }
-
-    alert("🔓 Dual-Lock 2FA Device Vault Authenticated Successfully!");
-    closeLockModal();
-}
-
 // Equity & Earnings Lab Analytics Chart Initialization
 let keywordSignalChartInstance = null;
 
