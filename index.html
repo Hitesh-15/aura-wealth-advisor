@@ -48,9 +48,6 @@
                         <span class="pulse-dot"></span>
                         <span class="badge-title"><i class="fa-solid fa-brain"></i> Cortex AI Active</span>
                     </div>
-                    <button id="btnOpenLockModal" class="btn btn-secondary btn-sm" onclick="openLockModal()" title="Manage Dual-Lock 2FA Device Security Vault">
-                        <i class="fa-solid fa-vault text-teal"></i> Dual-Lock Vault
-                    </button>
                     <button id="btnExportData" class="btn btn-secondary btn-sm" title="Export Financial Data">
                         <i class="fa-solid fa-download"></i> Export
                     </button>
@@ -764,42 +761,6 @@
                 </div>
             </section>
         </main>
-    </div>
-
-    <!-- MODAL: DUAL-LOCK 2FA DEVICE SECURITY VAULT -->
-    <div id="vaultLockModal" class="modal-backdrop" onclick="if(event.target===this) closeLockModal()">
-        <div class="modal-box" style="border-top: 3px solid #2dd4bf; max-width: 480px;">
-            <div class="modal-header">
-                <h3><i class="fa-solid fa-vault text-teal"></i> Dual-Lock 2FA Device Security Vault</h3>
-                <button class="modal-close" onclick="closeLockModal()">&times;</button>
-            </div>
-            <form id="vaultLockForm">
-                <p style="font-size: 0.83rem; color: #cbd5e1; margin-bottom: 1rem; line-height: 1.55;">
-                    Unlock full multi-device access to your <strong>OpenRouter Master Key</strong> on this phone, tablet, or browser. Unauthenticated visitors view read-only showcase mode with zero credit risk.
-                </p>
-
-                <div class="form-group">
-                    <label for="inputMasterPassphrase"><i class="fa-solid fa-key text-cyan"></i> Factor 1: Master Passphrase</label>
-                    <input type="password" id="inputMasterPassphrase" class="text-input" placeholder="Enter your secret Master Passphrase..." required style="width: 100%; padding: 8px 12px; font-size: 0.88rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff;">
-                </div>
-
-                <div class="form-group">
-                    <label for="inputFactorTwoPin"><i class="fa-solid fa-shield-cat text-teal"></i> Factor 2: Security PIN / 2FA Token</label>
-                    <input type="password" id="inputFactorTwoPin" class="text-input" placeholder="Enter 6-digit Security PIN..." required style="width: 100%; padding: 8px 12px; font-size: 0.88rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff;">
-                </div>
-
-                <div class="form-group">
-                    <label for="inputOpenRouterKey"><i class="fa-solid fa-bolt text-cyan"></i> OpenRouter Master Key (Stored Encrypted in Device Vault)</label>
-                    <input type="password" id="inputOpenRouterKey" class="text-input" placeholder="sk-or-v1-..." style="width: 100%; padding: 8px 12px; font-size: 0.88rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff;">
-                    <span class="help-text" style="font-size: 0.75rem; color: #94a3b8;">Encrypted 100% locally inside your browser's private storage. Zero data sent to any server.</span>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeLockModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #2563eb, #38bdf8); color: #fff;">Authenticate & Unlock Vault</button>
-                </div>
-            </form>
-        </div>
     </div>
 
     <!-- Educational Simulator & Legal Disclaimer Footer -->
