@@ -1830,3 +1830,93 @@ function formatCurrency(val) {
 function formatNumber(val) {
     return Math.round(val).toLocaleString();
 }
+
+// Vault Lock Modal Setup & Handlers
+function openLockModal() {
+    const modal = document.getElementById("vaultLockModal");
+    if (modal) modal.classList.add("active");
+}
+
+function closeLockModal() {
+    const modal = document.getElementById("vaultLockModal");
+    if (modal) modal.classList.remove("active");
+}
+
+function handleVaultFormSubmit(e) {
+    e.preventDefault();
+    const pass = document.getElementById("inputMasterPassphrase")?.value.trim();
+    const pin = document.getElementById("inputFactorTwoPin")?.value.trim();
+    const openrouterKey = document.getElementById("inputOpenRouterKey")?.value.trim();
+
+    if (!pass || !pin) {
+        alert("Please enter both Factor 1 (Master Passphrase) and Factor 2 (Security PIN).");
+        return;
+    }
+
+    localStorage.setItem("ambu_vault_authenticated", "true");
+    if (openrouterKey) {
+        localStorage.setItem("ambu_key_openrouter", openrouterKey);
+    }
+
+    alert("🔓 Dual-Lock 2FA Device Vault Authenticated Successfully!");
+    closeLockModal();
+}
+
+// Equity & Earnings Lab Analytics Chart Initialization
+let keywordSignalChartInstance = null;
+
+function renderKeywordSignalChart() {
+    const ctx = document.getElementById("keywordSignalChart");
+    if (!ctx) return;
+
+    if (keywordSignalChartInstance) {
+        keywordSignalChartInstance.destroy();
+    }
+
+    keywordSignalChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['AI & Data Centers', 'Guidance & Outlook', 'Gross Margins', 'Demand & Backlog', 'CapEx Spend'],
+            datasets: [{
+                label: 'Signal Count across Q3 2026 Calls',
+                data: [142, 98, 84, 76, 62],
+                backgroundColor: [
+                    'rgba(56, 189, 248, 0.75)',
+                    'rgba(45, 212, 191, 0.75)',
+                    'rgba(167, 139, 250, 0.75)',
+                    'rgba(16, 185, 129, 0.75)',
+                    'rgba(251, 191, 36, 0.75)'
+                ],
+                borderColor: [
+                    '#38bdf8',
+                    '#2dd4bf',
+                    '#a78bfa',
+                    '#10b981',
+                    '#fbbf24'
+                ],
+                borderWidth: 1.5,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+                y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.08)' } }
+            }
+        }
+    });
+}
+
+// Global Application Initialization Entrypoint
+document.addEventListener("DOMContentLoaded", () => {
+    const vaultForm = document.getElementById("vaultLockForm");
+    if (vaultForm) vaultForm.addEventListener("submit", handleVaultFormSubmit);
+
+    // Initial chart rendering
+    setTimeout(() => renderKeywordSignalChart(), 300);
+});

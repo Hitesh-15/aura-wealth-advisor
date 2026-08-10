@@ -3,21 +3,23 @@
    ========================================================================== */
 
 :root {
-    /* Color Palette */
-    --bg-dark: #080c14;
+    /* Color Palette - Midnight Sapphire, Ice Cyan & Electric Teal */
+    --bg-dark: #0b0f19;
     --bg-surface: #0f172a;
-    --bg-card: rgba(15, 23, 42, 0.75);
-    --bg-card-hover: rgba(30, 41, 59, 0.85);
+    --bg-card: rgba(15, 23, 42, 0.85);
+    --bg-card-hover: rgba(30, 41, 59, 0.9);
     --border-glass: rgba(255, 255, 255, 0.08);
-    --border-glow: rgba(16, 185, 129, 0.25);
+    --border-glow: rgba(56, 189, 248, 0.25);
     
     /* Brand Colors */
-    --primary: #10b981;          /* Emerald Green */
-    --primary-glow: rgba(16, 185, 129, 0.4);
-    --accent-blue: #3b82f6;       /* Sapphire Blue */
-    --accent-purple: #8b5cf6;     /* Amethyst Violet */
-    --accent-gold: #f59e0b;       /* Warm Gold */
-    --accent-red: #ef4444;        /* Crimson Red */
+    --primary: #38bdf8;          /* Ice Cyan */
+    --primary-glow: rgba(56, 189, 248, 0.35);
+    --accent-blue: #2563eb;       /* Sapphire Blue */
+    --accent-teal: #2dd4bf;       /* Electric Teal */
+    --accent-purple: #a78bfa;     /* Soft Indigo */
+    --accent-emerald: #10b981;    /* Muted Emerald */
+    --accent-gold: #fbbf24;       /* Warm Gold */
+    --accent-red: #fb7185;        /* Soft Rose */
     
     /* Text Colors */
     --text-primary: #f8fafc;
@@ -25,8 +27,9 @@
     --text-muted: #64748b;
     
     /* Fonts */
-    --font-heading: 'Outfit', -apple-system, sans-serif;
-    --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    --font-heading: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
     
     /* Transitions & Radius */
     --radius-sm: 8px;

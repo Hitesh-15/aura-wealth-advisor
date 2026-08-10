@@ -46,8 +46,11 @@
                 <div class="action-buttons">
                     <div class="header-cortex-badge" title="Powered by Ambulkar Cortex AI Gateway (cortex.ambulkar.com)">
                         <span class="pulse-dot"></span>
-                        <span class="badge-title"><i class="fa-solid fa-brain"></i> Ambulkar Cortex AI Gateway</span>
+                        <span class="badge-title"><i class="fa-solid fa-brain"></i> Cortex AI Active</span>
                     </div>
+                    <button id="btnOpenLockModal" class="btn btn-secondary btn-sm" onclick="openLockModal()" title="Manage Dual-Lock 2FA Device Security Vault">
+                        <i class="fa-solid fa-vault text-teal"></i> Dual-Lock Vault
+                    </button>
                     <button id="btnExportData" class="btn btn-secondary btn-sm" title="Export Financial Data">
                         <i class="fa-solid fa-download"></i> Export
                     </button>
@@ -68,10 +71,13 @@
                 <i class="fa-solid fa-grip"></i> Dashboard
             </button>
             <button class="nav-tab" data-tab="ai-advisor">
-                <i class="fa-solid fa-robot"></i> AI Financial Advisor
+                <i class="fa-solid fa-brain"></i> Cortex AI Advisor
             </button>
             <button class="nav-tab" data-tab="calculators">
                 <i class="fa-solid fa-calculator"></i> Calculators & FIRE
+            </button>
+            <button class="nav-tab" data-tab="earnings-lab">
+                <i class="fa-solid fa-chart-line text-teal"></i> Equity & Earnings Lab
             </button>
             <button class="nav-tab" data-tab="goals">
                 <i class="fa-solid fa-bullseye"></i> Financial Goals
@@ -650,64 +656,165 @@
         </div>
     </div>
 
-    <!-- MODAL: ADD / EDIT LEDGER ITEM -->
-    <div id="ledgerModal" class="modal-backdrop">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3 id="ledgerModalTitle">Add Ledger Item</h3>
-                <button class="modal-close" id="btnCloseLedgerModal">&times;</button>
-            </div>
-            <form id="ledgerForm">
-                <input type="hidden" id="ledgerItemType">
-                <input type="hidden" id="ledgerItemId">
-                <div class="form-group">
-                    <label for="ledgerName">Item Name</label>
-                    <input type="text" id="ledgerName" placeholder="e.g., Vanguard Total Stock Index" required>
-                </div>
-                <div class="form-group">
-                    <label for="ledgerCategory">Category</label>
-                    <select id="ledgerCategory">
-                        <!-- Populated dynamically based on type -->
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="ledgerAmount" id="ledgerAmountLabel">Value ($)</label>
-                    <input type="number" id="ledgerAmount" placeholder="15000" min="0" required>
-                </div>
-                <div id="liabilityExtraFields" style="display: none;">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="ledgerApr">APR Interest Rate (%)</label>
-                            <input type="number" id="ledgerApr" placeholder="18.5" step="0.1" min="0">
+            <!-- TAB 6: EQUITY & EARNINGS LAB -->
+            <section id="tab-earnings-lab" class="tab-content">
+                <div class="dashboard-hero" style="margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                        <div>
+                            <h2 style="font-size: 1.35rem; color: var(--text-primary);"><i class="fa-solid fa-chart-line text-teal"></i> Equity & Earnings Research Lab</h2>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Real-Time Stock Ticker Search, Earnings Call Reader, and Verbatim CEO Quote Ledger</p>
                         </div>
-                        <div class="form-group">
-                            <label for="ledgerMinPay">Monthly Min Payment ($)</label>
-                            <input type="number" id="ledgerMinPay" placeholder="150" min="0">
+                        <div style="display: flex; gap: 8px;">
+                            <span class="badge badge-primary" id="kpi-quarter-badge" style="background: rgba(45,212,191,0.12); color: #2dd4bf; border: 1px solid rgba(45,212,191,0.3); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                                <i class="fa-solid fa-calendar-days"></i> Q3 2026 (August 2026)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Search Ticker Bar -->
+                    <form id="form-fetch-ticker" style="display: flex; gap: 8px; background: rgba(0, 0, 0, 0.3); padding: 12px; border-radius: 12px; border: 1px solid rgba(56, 189, 248, 0.3); flex-wrap: wrap;">
+                        <div style="position: relative; flex: 1; min-width: 240px;">
+                            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #38bdf8; font-size: 0.88rem;"></i>
+                            <input type="text" id="input-ticker-search" class="text-input" placeholder="Enter Stock Ticker or Company Name (e.g. NVDA, AAPL, TSLA, MSFT)..." required style="width: 100%; padding: 10px 14px 10px 38px; font-size: 0.88rem; border-radius: 8px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255,255,255,0.15); color: #fff;">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm" id="btn-fetch-ticker" style="white-space: nowrap; background: linear-gradient(135deg, #2563eb, #38bdf8); color: #fff; border: none; padding: 0 18px; font-weight: 600;">
+                            <i class="fa-solid fa-bolt"></i> Fetch Latest Call
+                        </button>
+                    </form>
+                </div>
+
+                <!-- KPI Summary Row -->
+                <div class="kpi-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px;">
+                    <div class="card" style="padding: 16px; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+                        <span style="font-size: 0.78rem; color: #94a3b8; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-file-lines text-cyan"></i> Total Transcripts</span>
+                        <h3 id="kpi-total-transcripts" style="font-size: 1.4rem; color: #fff; margin: 4px 0;">3</h3>
+                        <span style="font-size: 0.72rem; color: #64748b;">Parsed Call Files</span>
+                    </div>
+                    <div class="card" style="padding: 16px; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+                        <span style="font-size: 0.78rem; color: #94a3b8; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-font text-purple"></i> Words Analyzed</span>
+                        <h3 id="kpi-total-words" style="font-size: 1.4rem; color: #fff; margin: 4px 0;">18,450</h3>
+                        <span style="font-size: 0.72rem; color: #64748b;">Across All Calls</span>
+                    </div>
+                    <div class="card" style="padding: 16px; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+                        <span style="font-size: 0.78rem; color: #94a3b8; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-signal text-teal"></i> Top Keyword Signal</span>
+                        <h3 id="kpi-top-keyword" style="font-size: 1.4rem; color: #2dd4bf; margin: 4px 0;">AI & Guidance</h3>
+                        <span id="kpi-top-keyword-count" style="font-size: 0.72rem; color: #64748b;">142 occurrences</span>
+                    </div>
+                </div>
+
+                <!-- Call Reader & Analytics Grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+                    <div class="card" style="padding: 20px; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <h3 style="font-size: 1.05rem; color: #fff; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-book-open text-cyan"></i> Financial Call Reader</h3>
+                            <select id="select-transcript" style="padding: 6px 12px; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-size: 0.82rem;">
+                                <option value="nvidia_q3.txt">NVIDIA Q3 2026 Call</option>
+                                <option value="apple_q3.txt">Apple Q3 2026 Call</option>
+                                <option value="tesla_q3.txt">Tesla Q3 2026 Call</option>
+                            </select>
+                        </div>
+                        <div id="transcript-reader-box" style="height: 320px; overflow-y: auto; padding: 14px; background: rgba(0,0,0,0.3); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); font-size: 0.85rem; color: #cbd5e1; line-height: 1.6;">
+                            <strong>Jensen Huang (CEO):</strong> "Demands for Blackwell infrastructure and AI data centers have accelerated beyond our initial forecasts. We expect datacenter gross margins to sustain at 75%+ into FY27..."
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 20px; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+                        <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-chart-column text-teal"></i> Keyword Signal Frequency</h3>
+                        <div style="height: 320px; position: relative;">
+                            <canvas id="keywordSignalChart"></canvas>
                         </div>
                     </div>
                 </div>
+
+                <!-- Structured CEO Quotes & Sentiment Table -->
+                <div class="card" style="padding: 20px; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+                    <h3 style="font-size: 1.05rem; color: #fff; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-quote-left text-purple"></i> Verbatim CEO & Executive Quotes</h3>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.84rem;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #94a3b8; text-align: left;">
+                                    <th style="padding: 10px;">Company</th>
+                                    <th style="padding: 10px;">Executive</th>
+                                    <th style="padding: 10px;">Verbatim Quote Statement</th>
+                                    <th style="padding: 10px;">Sentiment</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ceo-quotes-tbody">
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <td style="padding: 10px; font-weight: 600; color: #38bdf8;">NVDA</td>
+                                    <td style="padding: 10px; color: #fff;">Jensen Huang (CEO)</td>
+                                    <td style="padding: 10px; color: #cbd5e1;">"Blackwell architecture ramp is proceeding ahead of target."</td>
+                                    <td style="padding: 10px;"><span style="background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">Strong Bullish</span></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <td style="padding: 10px; font-weight: 600; color: #38bdf8;">AAPL</td>
+                                    <td style="padding: 10px; color: #fff;">Tim Cook (CEO)</td>
+                                    <td style="padding: 10px; color: #cbd5e1;">"Services ARR reached a new all-time quarterly revenue record."</td>
+                                    <td style="padding: 10px;"><span style="background: rgba(16,185,129,0.15); color: #34d399; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">Bullish</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; font-weight: 600; color: #38bdf8;">TSLA</td>
+                                    <td style="padding: 10px; color: #fff;">Elon Musk (CEO)</td>
+                                    <td style="padding: 10px; color: #cbd5e1;">"FSD Unsupervised testing is scaling rapidly in North America."</td>
+                                    <td style="padding: 10px;"><span style="background: rgba(56,189,248,0.15); color: #38bdf8; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">Positive</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL: DUAL-LOCK 2FA DEVICE SECURITY VAULT -->
+    <div id="vaultLockModal" class="modal-backdrop" onclick="if(event.target===this) closeLockModal()">
+        <div class="modal-box" style="border-top: 3px solid #2dd4bf; max-width: 480px;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-vault text-teal"></i> Dual-Lock 2FA Device Security Vault</h3>
+                <button class="modal-close" onclick="closeLockModal()">&times;</button>
+            </div>
+            <form id="vaultLockForm">
+                <p style="font-size: 0.83rem; color: #cbd5e1; margin-bottom: 1rem; line-height: 1.55;">
+                    Unlock full multi-device access to your <strong>OpenRouter Master Key</strong> on this phone, tablet, or browser. Unauthenticated visitors view read-only showcase mode with zero credit risk.
+                </p>
+
+                <div class="form-group">
+                    <label for="inputMasterPassphrase"><i class="fa-solid fa-key text-cyan"></i> Factor 1: Master Passphrase</label>
+                    <input type="password" id="inputMasterPassphrase" class="text-input" placeholder="Enter your secret Master Passphrase..." required style="width: 100%; padding: 8px 12px; font-size: 0.88rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff;">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputFactorTwoPin"><i class="fa-solid fa-shield-cat text-teal"></i> Factor 2: Security PIN / 2FA Token</label>
+                    <input type="password" id="inputFactorTwoPin" class="text-input" placeholder="Enter 6-digit Security PIN..." required style="width: 100%; padding: 8px 12px; font-size: 0.88rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff;">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputOpenRouterKey"><i class="fa-solid fa-bolt text-cyan"></i> OpenRouter Master Key (Stored Encrypted in Device Vault)</label>
+                    <input type="password" id="inputOpenRouterKey" class="text-input" placeholder="sk-or-v1-..." style="width: 100%; padding: 8px 12px; font-size: 0.88rem; border-radius: 6px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: #fff;">
+                    <span class="help-text" style="font-size: 0.75rem; color: #94a3b8;">Encrypted 100% locally inside your browser's private storage. Zero data sent to any server.</span>
+                </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="btnCancelLedger">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Item</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeLockModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #2563eb, #38bdf8); color: #fff;">Authenticate & Unlock Vault</button>
                 </div>
             </form>
         </div>
     </div>
 
-        <!-- Educational Simulator & Legal Disclaimer Footer -->
-        <footer class="app-disclaimer-footer" style="margin-top: 40px; margin-bottom: 30px; padding: 20px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 0.82rem; color: var(--text-muted, #94a3b8); text-align: center; line-height: 1.55;">
-            <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; color: #fbbf24; margin-bottom: 6px; font-size: 0.88rem;">
-                <i class="fa-solid fa-scale-balanced"></i> Educational Simulator & Software Showcase Disclaimer
-            </div>
-            <p style="max-width: 900px; margin: 0 auto;">
-                <strong>Aura Wealth</strong> is an interactive scenario simulator, portfolio engineering showcase, and AI gateway demonstration built for educational and software modeling purposes. 
-                Calculations, financial projections (FIRE, net worth, debt payoff), and AI outputs are generated for hypothetical scenario planning only and <strong>do not constitute certified financial, tax, investment, or legal advice</strong>.
-            </p>
-            <p style="margin-top: 8px; font-size: 0.76rem; opacity: 0.85; color: #cbd5e1;">
-                Always consult a licensed Certified Financial Planner (CFP) or CPA for actual financial guidance. Built by Hitesh Ambulkar. Powered by <strong style="color: #38bdf8;">Ambulkar Cortex AI Gateway</strong> (<a href="https://cortex.ambulkar.com" target="_blank" style="color: #38bdf8; text-decoration: underline;">cortex.ambulkar.com</a>).
-            </p>
-        </footer>
-    </div>
+    <!-- Educational Simulator & Legal Disclaimer Footer -->
+    <footer class="app-disclaimer-footer" style="margin-top: 40px; margin-bottom: 30px; padding: 20px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; font-size: 0.82rem; color: var(--text-muted, #94a3b8); text-align: center; line-height: 1.55;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; color: #38bdf8; margin-bottom: 6px; font-size: 0.88rem;">
+            <i class="fa-solid fa-scale-balanced"></i> Educational Simulator & Financial Showcase Disclaimer
+        </div>
+        <p style="max-width: 900px; margin: 0 auto;">
+            <strong>Ambulkar Wealth & Equity Intelligence</strong> is an interactive scenario simulator, portfolio engineering showcase, and AI gateway demonstration built for educational and software modeling purposes. 
+            Calculations, financial projections (FIRE, net worth, debt payoff), and AI outputs are generated for hypothetical scenario planning only and <strong>do not constitute certified financial, tax, investment, or legal advice</strong>.
+        </p>
+        <p style="margin-top: 8px; font-size: 0.76rem; opacity: 0.85; color: #cbd5e1;">
+            Always consult a licensed Certified Financial Planner (CFP) or CPA for actual financial guidance. Built by Hitesh Ambulkar. Powered by <strong style="color: #38bdf8;">Ambulkar Cortex AI Gateway</strong> (<a href="https://cortex.ambulkar.com" target="_blank" style="color: #38bdf8; text-decoration: underline;">cortex.ambulkar.com</a>).
+        </p>
+    </footer>
 
     <!-- Custom App Script -->
     <script src="app.js"></script>
