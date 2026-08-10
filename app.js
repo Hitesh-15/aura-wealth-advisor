@@ -779,6 +779,12 @@ Include key metrics, actionable steps, and risks. Do NOT include any personal us
             const err = await res.json().catch(() => ({}));
             const errMsg = err.error?.message || 'API request failed';
             
+function getCortexSearchUrl(query = "") {
+    const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.protocol === "file:";
+    const baseUrl = isLocal ? "../Cortex-AI-search/index.html" : "https://cortex.ambulkar.com/";
+    return query ? `${baseUrl}?q=${encodeURIComponent(query)}` : baseUrl;
+}
+
             // Handle free tier rate limits (429 / quota exceeded) gracefully with instant local synthesis
             if (res.status === 429 || errMsg.includes('Quota exceeded') || errMsg.includes('quota')) {
                 const localSynthesis = getLocalWealthSynthesis(userQuery);
@@ -791,7 +797,7 @@ Include key metrics, actionable steps, and risks. Do NOT include any personal us
                     <br><br>
                     <div style="padding-top: 10px; border-top: 1px dashed var(--border-color, rgba(255,255,255,0.15)); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
                         <span style="font-size: 0.78rem; opacity: 0.8;"><i class="fa-solid fa-bolt text-cyan"></i> Powered by <strong>Ambulkar Cortex Neural Gateway</strong></span>
-                        <a href="../Cortex-AI-search/index.html?q=${encodeURIComponent(userQuery)}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; text-decoration: none; padding: 4px 10px; border-radius: 4px; color: #38bdf8;">
+                        <a href="${getCortexSearchUrl(userQuery)}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; text-decoration: none; padding: 4px 10px; border-radius: 4px; color: #38bdf8;">
                             <i class="fa-solid fa-magnifying-glass-chart"></i> Deep Research in Cortex AI 🧠
                         </a>
                     </div>
@@ -826,7 +832,7 @@ Include key metrics, actionable steps, and risks. Do NOT include any personal us
                 <br><br>
                 <div style="padding-top: 10px; border-top: 1px dashed var(--border-color, rgba(255,255,255,0.15)); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
                     <span style="font-size: 0.78rem; opacity: 0.8;"><i class="fa-solid fa-bolt text-cyan"></i> Powered by <strong>Ambulkar Cortex Neural Gateway</strong></span>
-                    <a href="../Cortex-AI-search/index.html?q=${encodeURIComponent(userQuery)}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; text-decoration: none; padding: 4px 10px; border-radius: 4px;">
+                    <a href="${getCortexSearchUrl(userQuery)}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; text-decoration: none; padding: 4px 10px; border-radius: 4px;">
                         <i class="fa-solid fa-magnifying-glass-chart"></i> Deep Research in Cortex AI 🧠
                     </a>
                 </div>
@@ -863,7 +869,7 @@ async function generateAIResponse(query, needsResearch = false) {
         <br><br>
         <div style="padding-top: 10px; border-top: 1px dashed var(--border-color, rgba(255,255,255,0.15)); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
             <span style="font-size: 0.78rem; opacity: 0.8;"><i class="fa-solid fa-bolt text-cyan"></i> Powered by <strong>Ambulkar Cortex Neural Gateway</strong></span>
-            <a href="../Cortex-AI-search/index.html?q=${encodeURIComponent(query)}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; text-decoration: none; padding: 4px 10px; border-radius: 4px; color: #38bdf8;">
+            <a href="${getCortexSearchUrl(query)}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem; text-decoration: none; padding: 4px 10px; border-radius: 4px; color: #38bdf8;">
                 <i class="fa-solid fa-magnifying-glass-chart"></i> Deep Research in Cortex AI 🧠
             </a>
         </div>
